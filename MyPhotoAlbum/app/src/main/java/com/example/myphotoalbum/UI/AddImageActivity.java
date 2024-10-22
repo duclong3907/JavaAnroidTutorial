@@ -2,6 +2,7 @@ package com.example.myphotoalbum.UI;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.myphotoalbum.R;
 
+import java.io.IOException;
+
 public class AddImageActivity extends AppCompatActivity {
 
     private ImageView imageViewAddImage;
@@ -28,6 +31,7 @@ public class AddImageActivity extends AppCompatActivity {
     private Button buttonSave;
 
     ActivityResultLauncher<Intent> activityResultLauncherForSelectImage;
+    private Bitmap selectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +101,18 @@ public class AddImageActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
-                    public void onActivityResult(ActivityResult o) {
+                    public void onActivityResult(ActivityResult result) {
+                        int resultCode = result.getResultCode();
+                        Intent data = result.getData();
 
+                        if(resultCode == RESULT_OK && data != null){
+                            try {
+                                selectedImage = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                                imageViewAddImage.setImageBitmap(selectedImage);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
                 }
         );

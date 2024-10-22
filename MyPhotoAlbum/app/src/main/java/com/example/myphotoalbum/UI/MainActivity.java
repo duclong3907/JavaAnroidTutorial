@@ -1,8 +1,11 @@
 package com.example.myphotoalbum.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,11 +20,16 @@ public class MainActivity extends AppCompatActivity {
     private MyImagesViewModel myImagesViewModel;
     private RecyclerView rv;
     private FloatingActionButton fab;
+    private ActivityResultLauncher<Intent>activityResultLauncherForAddImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //register activity
+        registerActivityForAddImage();
+
         rv = findViewById(R.id.rv);
         fab = findViewById(R.id.fab);
 
@@ -39,9 +47,21 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
+                Intent intent = new Intent(MainActivity.this, AddImageActivity.class);
+                //activityResultLauncher
+                activityResultLauncherForAddImage.launch(intent);
             }
         });
 
     }
+
+    public void registerActivityForAddImage(){
+        activityResultLauncherForAddImage = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+
+                }
+        );
+    }
+
 }

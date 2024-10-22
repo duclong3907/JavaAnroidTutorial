@@ -2,10 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddImageActivity">
+    tools:context=".UI.AddImageActivity">
 
     <ImageView
         android:id="@+id/imageViewAddImage"
@@ -17,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/image" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,9 +24,9 @@
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewAddImage"
-        app:layout_constraintVertical_bias="0.5"
-        tools:layout_editor_absoluteX="1dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewAddImage">
 
         <EditText
             android:id="@+id/editTextAddTitle"
@@ -35,8 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:ems="10"
-            android:hint="Enter Title"
-            android:inputType="text" />
+            android:hint="Add Title"
+            android:inputType="textPersonName"
+            android:textColor="@color/black" />
 
         <EditText
             android:id="@+id/editTextAddDescription"
@@ -44,8 +44,9 @@
             android:layout_height="150dp"
             android:layout_margin="10dp"
             android:ems="10"
-            android:hint="Enter description"
-            android:inputType="text"
+            android:gravity="start|top"
+            android:hint="Add Description"
+            android:inputType="textMultiLine"
             android:textColor="@color/black" />
 
         <Button
@@ -53,7 +54,9 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Save"
+            android:background="@color/myThemeColor"
+            android:text="SAVE"
+            android:textColor="@color/white"
             android:textSize="24sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
