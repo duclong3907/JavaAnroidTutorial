@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.Manifest;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,6 +24,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.myphotoalbum.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class AddImageActivity extends AppCompatActivity {
@@ -32,6 +35,7 @@ public class AddImageActivity extends AppCompatActivity {
 
     ActivityResultLauncher<Intent> activityResultLauncherForSelectImage;
     private Bitmap selectedImage;
+    private Bitmap scaledImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +83,16 @@ public class AddImageActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(selectedImage == null){
+                    Toast.makeText(AddImageActivity.this, "Please select an image!", Toast.LENGTH_SHORT).show();
+                } else {
+                    String title = editTextAddTitle.getText().toString();
+                    String description = editTextAddDescription.getText().toString();
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    scaledImage = makeSmall(selectedImage, 300);
+                    scaledImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
+                    byte[] image = outputStream.toByteArray();
+                }
             }
         });
 
@@ -116,6 +129,21 @@ public class AddImageActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    public Bitmap makeSmall(Bitmap image, int maxSize){
+        int width = image.getWidth();
+        int height = image.getHeight();
+        float ratio = (float) width / (float) height;
+        if(ratio > 1){
+            width = maxSize;
+            height = (int) (width / ratio);
+        } else {
+            height = maxSize;
+            width = (int) (height * ratio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+
     }
 
 }
