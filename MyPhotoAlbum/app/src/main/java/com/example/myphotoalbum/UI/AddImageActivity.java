@@ -1,26 +1,107 @@
 package com.example.myphotoalbum.UI;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.Manifest;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.myphotoalbum.R;
 
 public class AddImageActivity extends AppCompatActivity {
 
+    private ImageView imageViewAddImage;
+    private EditText editTextAddTitle, editTextAddDescription;
+    private Button buttonSave;
+
+    ActivityResultLauncher<Intent> activityResultLauncherForSelectImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        getSupportActionBar().setTitle("Add Image");
         setContentView(R.layout.activity_add_image);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        imageViewAddImage = findViewById(R.id.imageViewAddImage);
+        editTextAddTitle = findViewById(R.id.editTextAddTitle);
+        editTextAddDescription = findViewById(R.id.editTextAddDescription);
+        buttonSave = findViewById(R.id.buttonSave);
+
+        //register
+        registerActivityForSelectImage();
+
+        imageViewAddImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String permission;
+
+               if(Build.VERSION.SDK_INT >= 33){
+                   permission = Manifest.permission.READ_MEDIA_IMAGES;
+               } else {
+                   permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+               }
+
+                if (ContextCompat.checkSelfPermission(AddImageActivity.this
+                        , permission) != PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(AddImageActivity.this
+                            ,new String[] {permission},1);
+                }
+                else
+                {
+                    Intent imageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    //before API 30 -> startActivityForResult(imageIntent,2);
+                    //ActivityResultLauncher
+                    activityResultLauncherForSelectImage.launch(imageIntent);
+               }
+
+            }
         });
+
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Intent imageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            //before API 30 -> startActivityForResult(imageIntent,2);
+            //ActivityResultLauncher
+            activityResultLauncherForSelectImage.launch(imageIntent);
+        }
+    }
+
+    public void registerActivityForSelectImage(){
+        activityResultLauncherForSelectImage = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) {
+
+                    }
+                }
+        );
+    }
+
 }
