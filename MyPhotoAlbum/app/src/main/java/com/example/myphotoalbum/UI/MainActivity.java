@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myphotoalbum.Adapters.MyImagesAdapter;
+import com.example.myphotoalbum.Models.MyImages;
 import com.example.myphotoalbum.R;
 import com.example.myphotoalbum.ViewModels.MyImagesViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -59,7 +60,14 @@ public class MainActivity extends AppCompatActivity {
         activityResultLauncherForAddImage = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-
+                    Intent data = result.getData();
+                    if(result.getResultCode() == RESULT_OK && data != null){
+                        String title = data.getStringExtra("title");
+                        String description = data.getStringExtra("description");
+                        byte[] image = data.getByteArrayExtra("image");
+                        MyImages myImages = new MyImages(title, description, image);
+                        myImagesViewModel.insert(myImages);
+                    }
                 }
         );
     }
