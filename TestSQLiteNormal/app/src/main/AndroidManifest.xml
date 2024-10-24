@@ -13,13 +13,13 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".ContactDetailActivity"
+            android:name=".views.ContactDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".AddEditContactActivity"
+            android:name=".views.AddEditContactActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
