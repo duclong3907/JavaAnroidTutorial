@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:fillViewport="true"
+    android:background="@color/background"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/inputCourseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/outline_border"
+            android:drawableStart="@drawable/ic_title"
+            android:drawablePadding="5dp"
+            android:hint="Course Name"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/errorCourseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/inputDayOfWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/outline_border"
+            android:drawableStart="@drawable/ic_canlendar"
+            android:drawablePadding="5dp"
+            android:hint="Day Of Week"
+            android:padding="15dp" />
+
+        <TextView
+            android:id="@+id/errorDayOfWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/inputTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/outline_border"
+            android:drawableStart="@drawable/ic_alarm"
+            android:drawablePadding="5dp"
+            android:focusable="false"
+            android:hint="Time"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/errorTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+
+        <EditText
+            android:id="@+id/inputCapacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/outline_border"
+            android:drawableStart="@drawable/ic_people"
+            android:drawablePadding="5dp"
+            android:hint="Capacity"
+            android:inputType="number"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/errorCapacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/inputDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/outline_border"
+            android:drawableStart="@drawable/ic_alarm"
+            android:drawablePadding="5dp"
+            android:hint="Duration"
+            android:inputType="number"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/errorDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/inputPricePerClass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/outline_border"
+            android:drawableStart="@drawable/ic_price"
+            android:drawablePadding="5dp"
+            android:hint="Price Per Class"
+            android:inputType="numberDecimal"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/errorPricePerClass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Class Type"
+            android:textSize="16dp" />
+
+        <Spinner
+            android:id="@+id/inputClassType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/outline_border"
+            android:dropDownVerticalOffset="50dp"
+            android:entries="@array/class_type_options"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/inputDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/outline_border"
+            android:drawableStart="@drawable/ic_description"
+            android:drawablePadding="5dp"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/errorDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/darkBrown"
+            android:paddingVertical="20dp"
+            android:text="Save"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>

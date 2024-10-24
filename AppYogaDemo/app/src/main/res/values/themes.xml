@@ -1,9 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AppYogaDemo" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+<!--        <item name="colorPrimary">@color/background</item>-->
+<!--        <item name="colorPrimaryDark">@color/black</item>-->
+<!--        <item name="colorAccent">@color/white</item>-->
     </style>
 
     <style name="Theme.AppYogaDemo" parent="Base.Theme.AppYogaDemo" />
+    <!-- Theme tùy chỉnh cho TimePickerDialog -->
+    <style name="CustomTimePickerTheme" parent="Theme.MaterialComponents.Dialog">
+        <!-- Màu chính -->
+        <item name="colorPrimary">#6200EE</item> <!-- Màu nền chính -->
+        <item name="colorPrimaryVariant">#3700B3</item>
+        <item name="colorAccent">#FF4081</item> <!-- Màu nút OK, Cancel -->
+        <item name="android:background">#f0f0f0</item> <!-- Màu nền của TimePickerDialog -->
+    </style>
 </resources>
