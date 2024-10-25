@@ -5,4 +5,5 @@
         <item>Aerial Yoga</item>
         <item>Family Yoga</item>
     </string-array>
+    <string name="choose_teacher">Choose teacher</string>
 </resources>

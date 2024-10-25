@@ -28,8 +28,9 @@
                 android:padding="10dp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -48,7 +49,20 @@
 
             </LinearLayout>
 
+
+            <Button
+                android:id="@+id/btnViewClass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@color/darkBrown"
+                android:padding="10dp"
+                android:text="View Class"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
