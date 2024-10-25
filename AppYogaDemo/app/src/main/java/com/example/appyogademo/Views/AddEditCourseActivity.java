@@ -13,12 +13,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.appyogademo.Data.CourseHelper;
 import com.example.appyogademo.Models.Course;
 import com.example.appyogademo.R;
 import com.example.appyogademo.Utils.ValidateInput;
 
 import java.sql.Time;
 import java.util.Calendar;
+import android.app.AlertDialog;
 
 public class AddEditCourseActivity extends AppCompatActivity {
 
@@ -105,7 +107,6 @@ public class AddEditCourseActivity extends AppCompatActivity {
         String courseName = inputCourseName.getText().toString();
         int dayOfWeek = Integer.parseInt(inputDayOfWeek.getText().toString());
         String timeString = inputTime.getText().toString();
-        // Chuyển đổi thời gian từ chuỗi thành Time
         String[] timeParts = timeString.split(":");
         Time time = new Time(Integer.parseInt(timeParts[0]), Integer.parseInt(timeParts[1]), 0);
         int capacity = Integer.parseInt(inputCapacity.getText().toString());
@@ -114,26 +115,50 @@ public class AddEditCourseActivity extends AppCompatActivity {
         String classType = inputClassType.getSelectedItem().toString();
         String description = inputDescription.getText().toString();
 
-        if (isEditMode) {
-            course.setCourseName(courseName);
-            course.setDayOfWeek(dayOfWeek);
-            course.setTime(time);
-            course.setCapacity(capacity);
-            course.setDuration(duration);
-            course.setPricePerClass(pricePerClass);
-            course.setClassType(classType);
-            course.setDescription(description);
-            Intent intent = new Intent();
-            intent.putExtra("course", course);
-            setResult(RESULT_OK, intent);
-        } else {
-            Course newCourse = new Course(0, courseName, dayOfWeek, time, capacity, duration, pricePerClass, classType, description);
-            Intent intent = new Intent();
-            intent.putExtra("newCourse", newCourse);
-            setResult(RESULT_OK, intent);
-        }
-        finish();
+        // Tạo nội dung hiển thị trong AlertDialog
+        String courseDetails = "Course Name: " + courseName +
+                "\nDay of Week: " + dayOfWeek +
+                "\nTime: " + timeString +
+                "\nCapacity: " + capacity +
+                "\nDuration: " + duration +
+                "\nPrice per Class: " + pricePerClass +
+                "\nClass Type: " + classType +
+                "\nDescription: " + description;
+
+        // Tạo AlertDialog để xác nhận
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Course Information")
+                .setMessage(courseDetails)
+                .setPositiveButton("Confirm", (dialog, which) -> {
+                    // Lưu khóa học nếu người dùng chọn xác nhận
+                    if (isEditMode) {
+                        course.setCourseName(courseName);
+                        course.setDayOfWeek(dayOfWeek);
+                        course.setTime(time);
+                        course.setCapacity(capacity);
+                        course.setDuration(duration);
+                        course.setPricePerClass(pricePerClass);
+                        course.setClassType(classType);
+                        course.setDescription(description);
+                        Intent intent = new Intent();
+                        intent.putExtra("course", course);
+                        setResult(RESULT_OK, intent);
+                    } else {
+                        Course newCourse = new Course(0, courseName, dayOfWeek, time, capacity, duration, pricePerClass, classType, description);
+                        Intent intent = new Intent();
+                        intent.putExtra("newCourse", newCourse);
+                        setResult(RESULT_OK, intent);
+                    }
+                    finish(); // Quay về MainActivity sau khi lưu
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    // Không làm gì nếu người dùng chọn Cancel
+                    dialog.dismiss();
+                })
+                .show();
     }
+
+
 
     // Helper method to get the index of a spinner item
     private int getSpinnerIndex(Spinner spinner, String value) {

@@ -23,18 +23,24 @@ public class CourseHelper {
 
     // thêm 1 course vào cơ sở dữ liệu
     public void insertCourse(Course course) {
-            ContentValues values = new ContentValues();
-            values.put(Course.COLUMN_NAME, course.getCourseName());
-            values.put(Course.COLUMN_DAYOFWEEK, course.getDayOfWeek());
-            values.put(Course.COLUMN_TIME, course.getTime().toString());
-            values.put(Course.COLUMN_CAPACITY, course.getCapacity());
-            values.put(Course.COLUMN_DURATION, course.getDuration());
-            values.put(Course.COLUMN_PRICEPERCLASS, course.getPricePerClass());
-            values.put(Course.COLUMN_CLASSTYPE, course.getClassType());
-            values.put(Course.COLUMN_DESCRIPTION, course.getDescription());
+        if (isCourseNameExists(course.getCourseName())) {
+            Toast.makeText(context, "Course name already exists", Toast.LENGTH_SHORT).show();
+            return; // Không thực hiện insert nếu đã tồn tại
+        }
 
-            db.insert(Course.TABLE_NAME, null, values);
+        ContentValues values = new ContentValues();
+        values.put(Course.COLUMN_NAME, course.getCourseName());
+        values.put(Course.COLUMN_DAYOFWEEK, course.getDayOfWeek());
+        values.put(Course.COLUMN_TIME, course.getTime().toString());
+        values.put(Course.COLUMN_CAPACITY, course.getCapacity());
+        values.put(Course.COLUMN_DURATION, course.getDuration());
+        values.put(Course.COLUMN_PRICEPERCLASS, course.getPricePerClass());
+        values.put(Course.COLUMN_CLASSTYPE, course.getClassType());
+        values.put(Course.COLUMN_DESCRIPTION, course.getDescription());
+
+        db.insert(Course.TABLE_NAME, null, values);
     }
+
 
     //lấy tất cả courses từ cơ sở dữ liệu
     public List<Course> getAllCourses() {
@@ -76,6 +82,12 @@ public class CourseHelper {
 
     //cập nhật thông tin của 1 course
     public void updateCourse(Course course) {
+        // Nếu courseName tồn tại và không phải của khóa học hiện tại (trong trường hợp chỉnh sửa)
+        if (isCourseNameExists(course.getCourseName())) {
+            Toast.makeText(context, "Course name already exists", Toast.LENGTH_SHORT).show();
+            return; // Không thực hiện update nếu đã tồn tại
+        }
+
         ContentValues values = new ContentValues();
         values.put(Course.COLUMN_NAME, course.getCourseName());
         values.put(Course.COLUMN_DAYOFWEEK, course.getDayOfWeek());
@@ -85,6 +97,7 @@ public class CourseHelper {
         values.put(Course.COLUMN_PRICEPERCLASS, course.getPricePerClass());
         values.put(Course.COLUMN_CLASSTYPE, course.getClassType());
         values.put(Course.COLUMN_DESCRIPTION, course.getDescription());
+
         db.update(Course.TABLE_NAME, values, Course.COLUMN_ID + "=?", new String[]{String.valueOf(course.getId())});
     }
 
@@ -92,5 +105,18 @@ public class CourseHelper {
     public void deleteCourse(Course course) {
         db.delete(Course.TABLE_NAME, Course.COLUMN_ID + "=?", new String[]{String.valueOf(course.getId())});
     }
+
+    public boolean isCourseNameExists(String courseName) {
+        Cursor cursor = db.query(Course.TABLE_NAME,
+                null,
+                Course.COLUMN_NAME + " = ?",
+                new String[]{courseName},
+                null, null, null);
+
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
+
 
 }
