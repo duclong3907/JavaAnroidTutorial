@@ -13,6 +13,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".Views.auth.RegisterScreen"
+            android:exported="false" />
+        <activity
+            android:name=".Views.auth.LoginScreen"
+            android:exported="false" />
+        <activity
             android:name=".Views.AddEditCourseActivity"
             android:exported="false" />
         <activity
@@ -20,7 +26,11 @@
             android:exported="false" />
         <activity
             android:name=".Views.MainActivity"
-            android:exported="true">
+            android:exported="false" />
+        <activity
+            android:name=".Views.SplashActivity"
+            android:exported="true"
+            android:theme="@style/NoTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

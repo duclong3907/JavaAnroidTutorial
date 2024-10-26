@@ -15,4 +15,5 @@
         <item name="colorAccent">#FF4081</item> <!-- Màu nút OK, Cancel -->
         <item name="android:background">#f0f0f0</item> <!-- Màu nền của TimePickerDialog -->
     </style>
+    <style name="NoTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
 </resources>
