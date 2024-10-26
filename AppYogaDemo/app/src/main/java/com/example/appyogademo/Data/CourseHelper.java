@@ -23,11 +23,6 @@ public class CourseHelper {
 
     // thêm 1 course vào cơ sở dữ liệu
     public void insertCourse(Course course) {
-        if (isCourseNameExists(course.getCourseName())) {
-            Toast.makeText(context, "Course name already exists", Toast.LENGTH_SHORT).show();
-            return; // Không thực hiện insert nếu đã tồn tại
-        }
-
         ContentValues values = new ContentValues();
         values.put(Course.COLUMN_NAME, course.getCourseName());
         values.put(Course.COLUMN_DAYOFWEEK, course.getDayOfWeek());
@@ -82,12 +77,6 @@ public class CourseHelper {
 
     //cập nhật thông tin của 1 course
     public void updateCourse(Course course) {
-        // Nếu courseName tồn tại và không phải của khóa học hiện tại (trong trường hợp chỉnh sửa)
-        if (isCourseNameExists(course.getCourseName())) {
-            Toast.makeText(context, "Course name already exists", Toast.LENGTH_SHORT).show();
-            return; // Không thực hiện update nếu đã tồn tại
-        }
-
         ContentValues values = new ContentValues();
         values.put(Course.COLUMN_NAME, course.getCourseName());
         values.put(Course.COLUMN_DAYOFWEEK, course.getDayOfWeek());
@@ -106,11 +95,11 @@ public class CourseHelper {
         db.delete(Course.TABLE_NAME, Course.COLUMN_ID + "=?", new String[]{String.valueOf(course.getId())});
     }
 
-    public boolean isCourseNameExists(String courseName) {
+    public boolean isCourseNameExists(String courseName, int courseId) {
         Cursor cursor = db.query(Course.TABLE_NAME,
                 null,
-                Course.COLUMN_NAME + " = ?",
-                new String[]{courseName},
+                Course.COLUMN_NAME + " = ? AND " + Course.COLUMN_ID + " != ?",
+                new String[]{courseName, String.valueOf(courseId)},
                 null, null, null);
 
         boolean exists = cursor.getCount() > 0;

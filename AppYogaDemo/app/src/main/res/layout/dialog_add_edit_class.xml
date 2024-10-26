@@ -40,7 +40,7 @@
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/etClassName"
+        android:id="@+id/inputClassName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Class Name"
@@ -52,7 +52,7 @@
         />
 
     <EditText
-        android:id="@+id/etClassDate"
+        android:id="@+id/inputClassDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Date"
@@ -64,7 +64,7 @@
         />
 
     <EditText
-        android:id="@+id/etComments"
+        android:id="@+id/inputComments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Comments"

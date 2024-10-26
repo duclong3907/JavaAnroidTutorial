@@ -1,6 +1,5 @@
 package com.example.appyogademo.Fragments;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import com.example.appyogademo.Models.YogaClass;
 import com.example.appyogademo.R;
 
 public class AddEditClassDialogFragment extends DialogFragment {
-    private EditText etClassName, etClassDate, etComments;
+    private EditText inputClassName, inputClassDate, inputComments;
     private ImageView imageClass, btnChooseImage;
     private Spinner spinnerTeachers;
     private Button btnCancel, btnAdd;
@@ -41,9 +40,9 @@ public class AddEditClassDialogFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_add_edit_class, container, false);
 
-        etClassName = view.findViewById(R.id.etClassName);
-        etClassDate = view.findViewById(R.id.etClassDate);
-        etComments = view.findViewById(R.id.etComments);
+        inputClassName = view.findViewById(R.id.inputClassName);
+        inputClassDate = view.findViewById(R.id.inputClassDate);
+        inputComments = view.findViewById(R.id.inputComments);
         spinnerTeachers = view.findViewById(R.id.spinnerTeachers);
         imageClass = view.findViewById(R.id.imageClass);
         btnChooseImage = view.findViewById(R.id.btnChooseImage);
@@ -52,9 +51,9 @@ public class AddEditClassDialogFragment extends DialogFragment {
 
         // Nếu là edit, điền thông tin của YogaClass vào các trường
         if (yogaClass != null) {
-            etClassName.setText(yogaClass.getClassName());
-            etClassDate.setText(yogaClass.getDate().toString());
-            etComments.setText(yogaClass.getComments());
+            inputClassName.setText(yogaClass.getClassName());
+            inputClassDate.setText(yogaClass.getDate().toString());
+            inputComments.setText(yogaClass.getComments());
             // Cài đặt hình ảnh nếu có
             // classImage.setImageBitmap(...); // Xử lý ảnh ở đây
         }
@@ -64,13 +63,13 @@ public class AddEditClassDialogFragment extends DialogFragment {
 
         // Sự kiện nút Add/Save
         btnAdd.setOnClickListener(v -> {
-            String className = etClassName.getText().toString();
-            String classDate = etClassDate.getText().toString();
-            String comments = etComments.getText().toString();
+            String className = inputClassName.getText().toString();
+            String classDate = inputClassDate.getText().toString();
+            String comments = inputComments.getText().toString();
 
             if (TextUtils.isEmpty(className) || TextUtils.isEmpty(classDate)) {
-                etClassName.setError("Required");
-                etClassDate.setError("Required");
+                inputClassName.setError("Required");
+                inputClassDate.setError("Required");
                 return;
             }
 

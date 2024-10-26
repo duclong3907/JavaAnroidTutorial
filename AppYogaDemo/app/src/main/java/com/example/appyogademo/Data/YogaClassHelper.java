@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.example.appyogademo.Models.Course;
 import com.example.appyogademo.Models.YogaClass;
 
 import java.text.ParseException;
@@ -98,11 +99,11 @@ public class YogaClassHelper {
     }
 
     // Kiểm tra xem className đã tồn tại hay chưa (nếu cần)
-    public boolean isClassNameExists(String className) {
+    public boolean isClassNameExists(String className, int classId) {
         Cursor cursor = db.query(YogaClass.TABLE_NAME,
                 null,
-                YogaClass.COLUMN_CLASSNAME + " = ?",
-                new String[]{className},
+                YogaClass.COLUMN_CLASSNAME+ " = ? AND " + Course.COLUMN_ID + " != ?",
+                new String[]{className, String.valueOf(classId)},
                 null, null, null);
 
         boolean exists = cursor.getCount() > 0;

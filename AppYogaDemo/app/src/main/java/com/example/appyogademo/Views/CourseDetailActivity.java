@@ -3,51 +3,28 @@ package com.example.appyogademo.Views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.appyogademo.Fragments.YogaClassBottomSheetFragment;
 import com.example.appyogademo.Models.Course;
 import com.example.appyogademo.Models.YogaClass;
-import com.example.appyogademo.R;
-
+import com.example.appyogademo.databinding.ActivityCourseDetailBinding;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class CourseDetailActivity extends AppCompatActivity {
-    private TextView txtCourseName;
-    private TextView txtDayOfWeek;
-    private TextView txtTime;
-    private TextView txtCapacity;
-    private TextView txtDuration;
-    private TextView txtPricePerClass;
-    private TextView txtClassType;
-    private TextView txtDescription;
-    private Button btnClassView;
+    ActivityCourseDetailBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_detail);
+        binding = ActivityCourseDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // Kích hoạt biểu tượng back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        // Khởi tạo các View
-        txtCourseName = findViewById(R.id.txtCourseName);
-        txtDayOfWeek = findViewById(R.id.txtDayOfWeek);
-        txtTime = findViewById(R.id.txtTime);
-        txtCapacity = findViewById(R.id.txtCapacity);
-        txtDuration = findViewById(R.id.txtDuration);
-        txtPricePerClass = findViewById(R.id.txtPricePerClass);
-        txtClassType = findViewById(R.id.txtClassType);
-        txtDescription = findViewById(R.id.txtDescription);
-        btnClassView = findViewById(R.id.btnViewClass);
 
         // Nhận dữ liệu từ Intent
         Intent intent = getIntent();
@@ -55,18 +32,18 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         // Hiển thị thông tin khóa học
         if (course != null) {
-            txtCourseName.setText(course.getCourseName());
-            txtDayOfWeek.setText(String.valueOf(course.getDayOfWeek())); // Chuyển đổi sang chuỗi
-            txtTime.setText(course.getTime().toString());
-            txtCapacity.setText(String.valueOf(course.getCapacity()));
-            txtDuration.setText(String.valueOf(course.getDuration()));
-            txtPricePerClass.setText(String.valueOf(course.getPricePerClass()));
-            txtClassType.setText(course.getClassType());
-            txtDescription.setText(course.getDescription());
+            binding.txtCourseName.setText(course.getCourseName());
+            binding.txtDayOfWeek.setText(String.valueOf(course.getDayOfWeek())); // Chuyển đổi sang chuỗi
+            binding.txtTime.setText(course.getTime().toString());
+            binding.txtCapacity.setText(String.valueOf(course.getCapacity()));
+            binding.txtDuration.setText(String.valueOf(course.getDuration()));
+            binding.txtPricePerClass.setText(String.valueOf(course.getPricePerClass()));
+            binding.txtClassType.setText(course.getClassType());
+            binding.txtDescription.setText(course.getDescription());
         }
 
         // Sự kiện click vào btnClassView
-        btnClassView.setOnClickListener(v -> {
+        binding.btnViewClass.setOnClickListener(v -> {
             // Lấy danh sách các lớp liên quan đến khóa học này (ví dụ từ cơ sở dữ liệu)
             List<YogaClass> relatedYogaClasses = getRelatedYogaClasses(course);
 

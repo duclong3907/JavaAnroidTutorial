@@ -5,79 +5,64 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.appyogademo.Data.CourseHelper;
 import com.example.appyogademo.Models.Course;
 import com.example.appyogademo.R;
 import com.example.appyogademo.Utils.ValidateInput;
-
+import com.example.appyogademo.ViewModels.CourseViewModel;
+import com.example.appyogademo.databinding.ActivityAddEditCourseBinding;
 import java.sql.Time;
 import java.util.Calendar;
 import android.app.AlertDialog;
 
 public class AddEditCourseActivity extends AppCompatActivity {
-
-    private EditText inputCourseName;
-    private EditText inputDayOfWeek;
-    private EditText inputTime; // Đổi từ TimePicker thành EditText
-    private EditText inputCapacity;
-    private EditText inputDuration;
-    private EditText inputPricePerClass;
-    private Spinner inputClassType;
-    private EditText inputDescription;
-    private Button buttonSave;
     private Course course;
     private boolean isEditMode = false; // Biến để xác định chế độ chỉnh sửa
+    private CourseViewModel courseViewModel;
+
+    ActivityAddEditCourseBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_course);
-
+        binding = ActivityAddEditCourseBinding.inflate(getLayoutInflater());
+//        setContentView(R.layout.activity_add_edit_course);
+        setContentView(binding.getRoot());
         // Ensure ActionBar is not null before using it
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        // Initialize views
-        inputCourseName = findViewById(R.id.inputCourseName);
-        inputDayOfWeek = findViewById(R.id.inputDayOfWeek);
-        inputTime = findViewById(R.id.inputTime); // Là EditText
-        inputCapacity = findViewById(R.id.inputCapacity);
-        inputDuration = findViewById(R.id.inputDuration);
-        inputPricePerClass = findViewById(R.id.inputPricePerClass);
-        inputClassType = findViewById(R.id.inputClassType);
-        inputDescription = findViewById(R.id.inputDescription);
-        buttonSave = findViewById(R.id.buttonSave);
+        // Khởi tạo ViewModel
+        courseViewModel = new CourseViewModel(this);
 
         // Xử lý khi người dùng click vào inputTime để hiển thị TimePickerDialog
-        inputTime.setOnClickListener(v -> showTimePickerDialog());
+        binding.inputTime.setOnClickListener(v -> showTimePickerDialog());
 
         // Check if there is course data (edit mode)
         if (getIntent().hasExtra("course")) {
             course = (Course) getIntent().getSerializableExtra("course");
-            inputCourseName.setText(course.getCourseName());
-            inputDayOfWeek.setText(String.valueOf(course.getDayOfWeek()));
-            inputTime.setText(course.getTime().toString()); // Hiển thị thời gian dưới dạng chuỗi
-            inputCapacity.setText(String.valueOf(course.getCapacity()));
-            inputDuration.setText(String.valueOf(course.getDuration()));
-            inputPricePerClass.setText(String.valueOf(course.getPricePerClass()));
-            inputClassType.setSelection(getSpinnerIndex(inputClassType, course.getClassType()));
-            inputDescription.setText(course.getDescription());
+            binding.inputCourseName.setText(course.getCourseName());
+            binding.inputDayOfWeek.setText(String.valueOf(course.getDayOfWeek()));
+            binding.inputTime.setText(course.getTime().toString()); // Hiển thị thời gian dưới dạng chuỗi
+            binding.inputCapacity.setText(String.valueOf(course.getCapacity()));
+            binding.inputDuration.setText(String.valueOf(course.getDuration()));
+            binding.inputPricePerClass.setText(String.valueOf(course.getPricePerClass()));
+            binding.inputClassType.setSelection(getSpinnerIndex(binding.inputClassType, course.getClassType()));
+            binding.inputDescription.setText(course.getDescription());
             isEditMode = true; // Set edit mode to true
         }
 
-        // Set click event for save button
-        buttonSave.setOnClickListener(v -> {
-            if (validateInputs()) {
-                saveCourse();
+
+        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validateInputs()) {
+                    saveCourse();
+                }
             }
         });
     }
@@ -95,7 +80,7 @@ public class AddEditCourseActivity extends AppCompatActivity {
                 (view, hourOfDay, minuteOfHour) -> {
                     // Định dạng giờ phút và hiển thị vào inputTime
                     String timeString = String.format("%02d:%02d", hourOfDay, minuteOfHour);
-                    inputTime.setText(timeString);  // Cập nhật giờ được chọn vào EditText
+                    binding.inputTime.setText(timeString);  // Cập nhật giờ được chọn vào EditText
                 }, hour, minute, true); // `true` cho 24 giờ, `false` cho 12 giờ AM/PM
 
         // Hiển thị TimePickerDialog
@@ -104,16 +89,16 @@ public class AddEditCourseActivity extends AppCompatActivity {
 
     // Method to save course information
     private void saveCourse() {
-        String courseName = inputCourseName.getText().toString();
-        int dayOfWeek = Integer.parseInt(inputDayOfWeek.getText().toString());
-        String timeString = inputTime.getText().toString();
+        String courseName = binding.inputCourseName.getText().toString();
+        int dayOfWeek = Integer.parseInt(binding.inputDayOfWeek.getText().toString());
+        String timeString = binding.inputTime.getText().toString();
         String[] timeParts = timeString.split(":");
         Time time = new Time(Integer.parseInt(timeParts[0]), Integer.parseInt(timeParts[1]), 0);
-        int capacity = Integer.parseInt(inputCapacity.getText().toString());
-        int duration = Integer.parseInt(inputDuration.getText().toString());
-        Double pricePerClass = Double.parseDouble(inputPricePerClass.getText().toString());
-        String classType = inputClassType.getSelectedItem().toString();
-        String description = inputDescription.getText().toString();
+        int capacity = Integer.parseInt(binding.inputCapacity.getText().toString());
+        int duration = Integer.parseInt(binding.inputDuration.getText().toString());
+        Double pricePerClass = Double.parseDouble(binding.inputPricePerClass.getText().toString());
+        String classType = binding.inputClassType.getSelectedItem().toString();
+        String description = binding.inputDescription.getText().toString();
 
         // Tạo nội dung hiển thị trong AlertDialog
         String courseDetails = "Course Name: " + courseName +
@@ -140,16 +125,20 @@ public class AddEditCourseActivity extends AppCompatActivity {
                         course.setPricePerClass(pricePerClass);
                         course.setClassType(classType);
                         course.setDescription(description);
-                        Intent intent = new Intent();
-                        intent.putExtra("course", course);
-                        setResult(RESULT_OK, intent);
+                        Boolean result = courseViewModel.update(course);
+                        if(result == true) {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
                     } else {
                         Course newCourse = new Course(0, courseName, dayOfWeek, time, capacity, duration, pricePerClass, classType, description);
-                        Intent intent = new Intent();
-                        intent.putExtra("newCourse", newCourse);
-                        setResult(RESULT_OK, intent);
+                        Boolean result = courseViewModel.insert(newCourse);
+                        if(result == true) {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
                     }
-                    finish(); // Quay về MainActivity sau khi lưu
+                   // finish(); // Quay về MainActivity sau khi lưu
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     // Không làm gì nếu người dùng chọn Cancel
@@ -186,7 +175,7 @@ public class AddEditCourseActivity extends AppCompatActivity {
         clearAllErrors();
 
         // Kiểm tra tên khóa học
-        if (ValidateInput.isEmpty(inputCourseName)) {
+        if (ValidateInput.isEmpty(binding.inputCourseName)) {
             TextView errorCourseName = findViewById(R.id.errorCourseName);
             errorCourseName.setText("Course Name cannot be empty");
             errorCourseName.setVisibility(View.VISIBLE);
@@ -194,7 +183,7 @@ public class AddEditCourseActivity extends AppCompatActivity {
         }
 
         // Kiểm tra ngày trong tuần (DayOfWeek phải là số từ 0-6)
-        if (!ValidateInput.isValidDayOfWeek(inputDayOfWeek)) {
+        if (!ValidateInput.isValidDayOfWeek(binding.inputDayOfWeek)) {
             TextView errorDayOfWeek = findViewById(R.id.errorDayOfWeek);
             errorDayOfWeek.setText("Day of Week must be a valid number between 0 and 6");
             errorDayOfWeek.setVisibility(View.VISIBLE);
@@ -202,7 +191,7 @@ public class AddEditCourseActivity extends AppCompatActivity {
         }
 
         // Kiểm tra thời gian
-        if (ValidateInput.isEmpty(inputTime)) {
+        if (ValidateInput.isEmpty(binding.inputTime)) {
             TextView errorTime = findViewById(R.id.errorTime);
             errorTime.setText("Time cannot be empty");
             errorTime.setVisibility(View.VISIBLE);
@@ -210,7 +199,7 @@ public class AddEditCourseActivity extends AppCompatActivity {
         }
 
         // Kiểm tra dung lượng lớp học
-        if (!ValidateInput.isPositiveNumber(inputCapacity)) {
+        if (!ValidateInput.isPositiveNumber(binding.inputCapacity)) {
             TextView errorCapacity = findViewById(R.id.errorCapacity);
             errorCapacity.setText("Capacity must be a positive number");
             errorCapacity.setVisibility(View.VISIBLE);
@@ -218,7 +207,7 @@ public class AddEditCourseActivity extends AppCompatActivity {
         }
 
         // Kiểm tra thời lượng lớp học
-        if (!ValidateInput.isPositiveNumber(inputDuration)) {
+        if (!ValidateInput.isPositiveNumber(binding.inputDuration)) {
             TextView errorDuration = findViewById(R.id.errorDuration);
             errorDuration.setText("Duration must be a positive number");
             errorDuration.setVisibility(View.VISIBLE);
@@ -226,7 +215,7 @@ public class AddEditCourseActivity extends AppCompatActivity {
         }
 
         // Kiểm tra giá cho mỗi buổi học
-        if (!ValidateInput.isPositiveDouble(inputPricePerClass)) {
+        if (!ValidateInput.isPositiveDouble(binding.inputPricePerClass)) {
             TextView errorPricePerClass = findViewById(R.id.errorPricePerClass);
             errorPricePerClass.setText("Price per class must be a positive number");
             errorPricePerClass.setVisibility(View.VISIBLE);
@@ -234,7 +223,7 @@ public class AddEditCourseActivity extends AppCompatActivity {
         }
 
         // Kiểm tra mô tả khóa học
-        if (ValidateInput.isEmpty(inputDescription)) {
+        if (ValidateInput.isEmpty(binding.inputDescription)) {
             TextView errorDescription = findViewById(R.id.errorDescription);
             errorDescription.setText("Description cannot be empty");
             errorDescription.setVisibility(View.VISIBLE);
@@ -246,13 +235,13 @@ public class AddEditCourseActivity extends AppCompatActivity {
 
     // Phương thức xóa tất cả các lỗi trước khi kiểm tra
     private void clearAllErrors() {
-        findViewById(R.id.errorCourseName).setVisibility(View.GONE);
-        findViewById(R.id.errorDayOfWeek).setVisibility(View.GONE);
-        findViewById(R.id.errorTime).setVisibility(View.GONE);
-        findViewById(R.id.errorCapacity).setVisibility(View.GONE);
-        findViewById(R.id.errorDuration).setVisibility(View.GONE);
-        findViewById(R.id.errorPricePerClass).setVisibility(View.GONE);
-        findViewById(R.id.errorDescription).setVisibility(View.GONE);
+        binding.errorCourseName.setVisibility(View.GONE);
+        binding.errorDayOfWeek.setVisibility(View.GONE);
+        binding.errorTime.setVisibility(View.GONE);
+        binding.errorCapacity.setVisibility(View.GONE);
+        binding.errorDuration.setVisibility(View.GONE);
+        binding.errorPricePerClass.setVisibility(View.GONE);
+        binding.errorDescription.setVisibility(View.GONE);
     }
 
 

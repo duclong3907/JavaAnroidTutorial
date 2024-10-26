@@ -28,14 +28,24 @@ public class CourseRepository {
         return courses;
     }
 
-    public void insert(Course course) {
-        courseHelper.insertCourse(course);
-        loadCourses();
+    public Result insert(Course course) {
+        if(courseHelper.isCourseNameExists(course.getCourseName(), -1)) {
+            return new Result(false, "Course already exists");
+        } else {
+            courseHelper.insertCourse(course);
+            loadCourses();
+            return new Result(true, "Course added successfully");
+        }
     }
 
-    public void update(Course course) {
-        courseHelper.updateCourse(course);
-        loadCourses();
+    public Result update(Course course) {
+        if(courseHelper.isCourseNameExists(course.getCourseName(), course.getId())) {
+            return new Result(false, "Course name already exists");
+        } else {
+            courseHelper.updateCourse(course);
+            loadCourses();
+            return new Result(true, "Course updated successfully");
+        }
     }
 
     public void delete(Course course) {

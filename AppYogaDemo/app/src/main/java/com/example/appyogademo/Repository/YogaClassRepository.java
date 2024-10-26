@@ -28,14 +28,25 @@ public class YogaClassRepository {
         return yogaClasses;
     }
 
-    public void insert(YogaClass yogaClass) {
-        yogaClassHelper.insertYogaClass(yogaClass);
-        loadYogaClasses();
+    public Result insert(YogaClass yogaClass) {
+        if(yogaClassHelper.isClassNameExists(yogaClass.getClassName(), -1)) {
+            return new Result(false, "Class name already exists");
+
+        } else {
+            yogaClassHelper.insertYogaClass(yogaClass);
+            loadYogaClasses();
+            return new Result(true, "Class added successfully");
+        }
     }
 
-    public void update(YogaClass yogaClass) {
-        yogaClassHelper.updateYogaClass(yogaClass);
-        loadYogaClasses();
+    public Result update(YogaClass yogaClass) {
+        if(yogaClassHelper.isClassNameExists(yogaClass.getClassName(), yogaClass.getId())) {
+            return new Result(false, "Class name already exists");
+        } else {
+            yogaClassHelper.updateYogaClass(yogaClass);
+            loadYogaClasses();
+            return new Result(true, "Class updated successfully");
+        }
     }
 
     public void delete(YogaClass yogaClass) {
