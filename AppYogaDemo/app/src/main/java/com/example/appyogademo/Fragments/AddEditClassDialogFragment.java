@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,11 +81,15 @@ public class AddEditClassDialogFragment extends DialogFragment {
             public void onChanged(List<User> users) {
                 teacherList = users;
                 setupTeacherSpinner();
+
+                // Đảm bảo thiết lập spinner sau khi đã có danh sách giáo viên
                 if (yogaClass != null) {
                     populateFields();
                 }
             }
         });
+
+
 
         yogaClassViewModel = new YogaClassViewModel(requireContext(), courseId);
 
@@ -262,6 +267,16 @@ public class AddEditClassDialogFragment extends DialogFragment {
                 });
     }
 
+    private Date parseDate(String dateString) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        try {
+            return format.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void setupTeacherSpinner() {
         List<String> teacherNames = new ArrayList<>();
         for (User teacher : teacherList) {
@@ -272,6 +287,19 @@ public class AddEditClassDialogFragment extends DialogFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTeachers.setAdapter(adapter);
 
+        // Vô hiệu hóa listener khi thiết lập giá trị ban đầu
+        binding.spinnerTeachers.setOnItemSelectedListener(null);
+
+        if (yogaClass != null) {
+            for (int i = 0; i < teacherList.size(); i++) {
+                if (teacherList.get(i).getId().equals(yogaClass.getTeacherId())) {
+                    binding.spinnerTeachers.setSelection(i);
+                    break;
+                }
+            }
+        }
+
+        // Sau khi thiết lập xong, gán lại listener
         binding.spinnerTeachers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -285,20 +313,12 @@ public class AddEditClassDialogFragment extends DialogFragment {
         });
     }
 
-    private Date parseDate(String dateString) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        try {
-            return format.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     private void populateFields() {
         binding.inputClassName.setText(yogaClass.getClassName());
         binding.inputClassDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(yogaClass.getDate()));
         binding.inputComments.setText(yogaClass.getComments());
+
         if (yogaClass.getImage() != null) {
             if (yogaClass.getImage().startsWith("content://")) {
                 imageUri = Uri.parse(yogaClass.getImage());
@@ -309,11 +329,19 @@ public class AddEditClassDialogFragment extends DialogFragment {
                 loadImageFromUrl(yogaClass.getImage());
             }
         }
-        for (int i = 0; i < teacherList.size(); i++) {
-            if (teacherList.get(i).getId() == yogaClass.getTeacherId()) {
-                binding.spinnerTeachers.setSelection(i);
-                break;
+
+        // Thiết lập đúng giáo viên cho spinner
+        if (teacherList != null && !teacherList.isEmpty()) {
+            for (int i = 0; i < teacherList.size(); i++) {
+                if (teacherList.get(i).getId().equals(yogaClass.getTeacherId())) {
+                    binding.spinnerTeachers.setSelection(i);
+                    break;
+                }
             }
         }
     }
+
+
+
+
 }

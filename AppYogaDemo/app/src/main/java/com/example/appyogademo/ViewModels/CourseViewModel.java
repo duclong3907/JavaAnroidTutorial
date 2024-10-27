@@ -74,4 +74,8 @@ public class CourseViewModel extends ViewModel {
         }
     }
 
+    public Course getCourseById(int courseId) {
+        return repository.getCourseById(courseId);
+    }
+
 }

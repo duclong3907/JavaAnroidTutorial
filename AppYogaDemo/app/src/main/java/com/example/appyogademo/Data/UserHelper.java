@@ -100,6 +100,40 @@ public class UserHelper {
         return new Result(false, "Email or password is incorrect");
     }
 
+    // lấy thông tin của một user dựa vào id
+    public User getUser(String id) {
+        String query = "SELECT * FROM " + User.TABLE_NAME + " WHERE " + User.COLUMN_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{id});
+        if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(User.COLUMN_ID);
+            int fullNameIndex = cursor.getColumnIndex(User.COLUMN_FULLNAME);
+            int phoneNumberIndex = cursor.getColumnIndex(User.COLUMN_PHONENUMBER);
+            int emailIndex = cursor.getColumnIndex(User.COLUMN_EMAIL);
+            int imageIndex = cursor.getColumnIndex(User.COLUMN_IMAGE);
+            int addressIndex = cursor.getColumnIndex(User.COLUMN_ADDRESS);
+            int experienceIndex = cursor.getColumnIndex(User.COLUMN_EXPERIENCE);
+            int passwordIndex = cursor.getColumnIndex(User.COLUMN_PASSWORD);
+            int roleIndex = cursor.getColumnIndex(User.COLUMN_ROLE);
+
+            if (idIndex >= 0 && fullNameIndex >= 0 && phoneNumberIndex >= 0 && emailIndex >= 0 &&
+                    imageIndex >= 0 && addressIndex >= 0 && experienceIndex >= 0 && passwordIndex >= 0 && roleIndex >= 0) {
+
+                String fullName = cursor.getString(fullNameIndex);
+                String phoneNumber = cursor.getString(phoneNumberIndex);
+                String email = cursor.getString(emailIndex);
+                String image = cursor.getString(imageIndex);
+                String address = cursor.getString(addressIndex);
+                int experience = cursor.getInt(experienceIndex);
+                String password = cursor.getString(passwordIndex);
+                String role = cursor.getString(roleIndex);
+
+                return new User(id, fullName, phoneNumber, email, image, address, experience, password, role);
+            }
+        }
+        cursor.close();
+        return null;
+    }
+
     // Get all users with the role "Teacher"
     public List<User> getAllTeachers() {
         List<User> teachers = new ArrayList<>();

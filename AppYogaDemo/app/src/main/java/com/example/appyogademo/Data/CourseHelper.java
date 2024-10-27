@@ -75,6 +75,43 @@ public class CourseHelper {
         return courses;
     }
 
+    //lấy 1 course từ cơ sở dữ liệu
+    public Course getCourse(int courseId) {
+        Cursor cursor = db.query(Course.TABLE_NAME, null, Course.COLUMN_ID + "=?", new String[]{String.valueOf(courseId)}, null, null, null);
+
+        if (cursor != null) {
+            try {
+                if (cursor.moveToNext()) {
+                    int idIndex = cursor.getColumnIndex(Course.COLUMN_ID);
+                    int courseNameIndex = cursor.getColumnIndex(Course.COLUMN_NAME);
+                    int dayOfWeekIndex = cursor.getColumnIndex(Course.COLUMN_DAYOFWEEK);
+                    int timeIndex = cursor.getColumnIndex(Course.COLUMN_TIME);
+                    int capacityIndex = cursor.getColumnIndex(Course.COLUMN_CAPACITY);
+                    int durationIndex = cursor.getColumnIndex(Course.COLUMN_DURATION);
+                    int pricePerClassIndex = cursor.getColumnIndex(Course.COLUMN_PRICEPERCLASS);
+                    int classTypeIndex = cursor.getColumnIndex(Course.COLUMN_CLASSTYPE);
+                    int descriptionIndex = cursor.getColumnIndex(Course.COLUMN_DESCRIPTION);
+
+                    if (idIndex != -1 && courseNameIndex != -1 && dayOfWeekIndex != -1 && timeIndex != -1 && capacityIndex != -1 && durationIndex != -1 && pricePerClassIndex != -1 && classTypeIndex != -1 && descriptionIndex != -1) {
+                        int id = cursor.getInt(idIndex);
+                        String name = cursor.getString(courseNameIndex);
+                        int dayOfWeek = cursor.getInt(dayOfWeekIndex);
+                        Time time = Time.valueOf(cursor.getString(timeIndex));
+                        int capacity = cursor.getInt(capacityIndex);
+                        int duration = cursor.getInt(durationIndex);
+                        double pricePerClass = cursor.getDouble(pricePerClassIndex);
+                        String classType = cursor.getString(classTypeIndex);
+                        String description = cursor.getString(descriptionIndex);
+                        return new Course(id, name, dayOfWeek, time, capacity, duration, pricePerClass, classType, description);
+                    }
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        return null;
+    }
+
     //cập nhật thông tin của 1 course
     public void updateCourse(Course course) {
         ContentValues values = new ContentValues();

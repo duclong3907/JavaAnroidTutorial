@@ -53,6 +53,10 @@ public class CourseRepository {
         loadCourses();
     }
 
+    public Course getCourseById(int courseId) {
+       return courseHelper.getCourse(courseId);
+    }
+
     public void loadCourses() {
         courses.postValue(courseHelper.getAllCourses());
     }

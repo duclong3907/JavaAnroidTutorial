@@ -38,6 +38,10 @@ public class UserViewModel extends ViewModel {
         userRepository.deleteUser(user);
     }
 
+    public User getUserById(String userId) {
+        return userRepository.getUserById(userId);
+    }
+
     public static class Factory implements ViewModelProvider.Factory {
         private final Context context;
 

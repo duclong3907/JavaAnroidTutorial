@@ -1,10 +1,13 @@
 package com.example.appyogademo.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.Locale;
 
 public class TimeUtils {
 
@@ -24,10 +27,11 @@ public class TimeUtils {
 
     public static String convertDate(String dateStr) {
         try {
-            LocalDateTime dateTime = LocalDateTime.parse(dateStr, DateTimeFormatter.ISO_DATE_TIME);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            return dateTime.format(formatter);
-        } catch (DateTimeParseException e) {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.getDefault());
+            Date date = inputFormat.parse(dateStr);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            return outputFormat.format(date);
+        } catch (ParseException e) {
             e.printStackTrace();
             return null;
         }

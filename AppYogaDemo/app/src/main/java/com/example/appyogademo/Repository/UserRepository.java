@@ -54,4 +54,9 @@ public class UserRepository {
         userHelper.deleteUser(user);
         loadAllTeachers(); // Refresh the data
     }
+
+    // Method to get a user by ID
+    public User getUserById(String userId) {
+        return userHelper.getUser(userId);
+    }
 }

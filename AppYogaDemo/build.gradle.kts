@@ -2,3 +2,6 @@
 plugins {
     alias(libs.plugins.android.application) apply false
 }
+
+val sourceCompatibility = JavaVersion.VERSION_17
+val targetCompatibility = JavaVersion.VERSION_17

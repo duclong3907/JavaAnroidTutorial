@@ -17,6 +17,7 @@ import com.example.appyogademo.Adapters.YogaClassAdapter;
 import com.example.appyogademo.Models.YogaClass;
 import com.example.appyogademo.R;
 import com.example.appyogademo.ViewModels.YogaClassViewModel;
+import com.example.appyogademo.Views.YogaClassDetailActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -66,12 +67,12 @@ public class YogaClassBottomSheetFragment extends BottomSheetDialogFragment {
         });
 
 
-        // Handle the click event on the item
-//        adapter.setOnItemClickListener(yogaClass -> {
-//            Intent intent = new Intent(getContext(), YogaClassDetailActivity.class);
-//            intent.putExtra("yogaClass", yogaClass);
-//            startActivity(intent);
-//        });
+//         Handle the click event on the item
+        adapter.setOnItemClickListener(yogaClass -> {
+            Intent intent = new Intent(getContext(), YogaClassDetailActivity.class);
+            intent.putExtra("yogaClass", yogaClass);
+            startActivity(intent);
+        });
 
         // Handle the click event on the edit button
         // Handle the click event on the edit button
