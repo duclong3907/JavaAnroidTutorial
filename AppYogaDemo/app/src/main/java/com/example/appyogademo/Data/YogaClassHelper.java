@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.util.Calendar;
 import android.widget.Toast;
 
 import com.example.appyogademo.Models.Course;
@@ -11,6 +12,7 @@ import com.example.appyogademo.Models.YogaClass;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -67,9 +69,48 @@ public class YogaClassHelper {
                         }
                         String comments = cursor.getString(commentsIndex);
                         String image = cursor.getString(imageIndex);
-                        int teacherId = cursor.getInt(teacherIdIndex);
+                        String teacherId = cursor.getString(teacherIdIndex);
                         int courseId = cursor.getInt(courseIdIndex);
 
+                        yogaClasses.add(new YogaClass(id, className, date, comments, image, teacherId, courseId));
+                    }
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        return yogaClasses;
+    }
+
+    // Lấy tất cả YogaClasses từ cơ sở dữ liệu theo courseId
+    public List<YogaClass> getAllYogaByCourseId(int courseId) {
+        List<YogaClass> yogaClasses = new ArrayList<>();
+        Cursor cursor = db.query(YogaClass.TABLE_NAME, null, YogaClass.COLUMN_COURSEID + "=?", new String[]{String.valueOf(courseId)}, null, null, null);
+
+        if (cursor != null) {
+            try {
+                while (cursor.moveToNext()) {
+                    int idIndex = cursor.getColumnIndex(YogaClass.COLUMN_ID);
+                    int classNameIndex = cursor.getColumnIndex(YogaClass.COLUMN_CLASSNAME);
+                    int dateIndex = cursor.getColumnIndex(YogaClass.COLUMN_DATE);
+                    int commentsIndex = cursor.getColumnIndex(YogaClass.COLUMN_COMMENTS);
+                    int imageIndex = cursor.getColumnIndex(YogaClass.COLUMN_IMAGE);
+                    int teacherIdIndex = cursor.getColumnIndex(YogaClass.COLUMN_TEACHERID);
+                    int courseIdIndex = cursor.getColumnIndex(YogaClass.COLUMN_COURSEID);
+
+                    if (idIndex != -1 && classNameIndex != -1 && dateIndex != -1 &&
+                            commentsIndex != -1 && imageIndex != -1 && teacherIdIndex != -1 && courseIdIndex != -1) {
+                        int id = cursor.getInt(idIndex);
+                        String className = cursor.getString(classNameIndex);
+                        Date date = null;
+                        try {
+                            date = dateFormat.parse(cursor.getString(dateIndex));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        String comments = cursor.getString(commentsIndex);
+                        String image = cursor.getString(imageIndex);
+                        String teacherId = cursor.getString(teacherIdIndex);
                         yogaClasses.add(new YogaClass(id, className, date, comments, image, teacherId, courseId));
                     }
                 }
@@ -102,7 +143,7 @@ public class YogaClassHelper {
     public boolean isClassNameExists(String className, int classId) {
         Cursor cursor = db.query(YogaClass.TABLE_NAME,
                 null,
-                YogaClass.COLUMN_CLASSNAME+ " = ? AND " + Course.COLUMN_ID + " != ?",
+                YogaClass.COLUMN_CLASSNAME+ " = ? AND " + YogaClass.COLUMN_ID + " != ?",
                 new String[]{className, String.valueOf(classId)},
                 null, null, null);
 
@@ -110,5 +151,36 @@ public class YogaClassHelper {
         cursor.close();
         return exists;
     }
+
+    // Get the dayOfWeek of a Course by its courseId
+    public int getCourseDayOfWeek(int courseId) {
+        Cursor cursor = db.query(Course.TABLE_NAME, new String[]{Course.COLUMN_DAYOFWEEK}, Course.COLUMN_ID + "=?", new String[]{String.valueOf(courseId)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int dayOfWeekIndex = cursor.getColumnIndex(Course.COLUMN_DAYOFWEEK);
+            if (dayOfWeekIndex != -1) {
+                int dayOfWeek = cursor.getInt(dayOfWeekIndex);
+                cursor.close();
+                return dayOfWeek;
+            }
+            cursor.close();
+        }
+        return -1; // Return -1 if not found
+    }
+
+    //check day of week in course match date in yoga class
+    public boolean checkDayOfWeekMatch(int courseId, Date date) {
+        int courseDayOfWeek = getCourseDayOfWeek(courseId);
+        if (courseDayOfWeek == -1) {
+            return false;
+        }
+
+        // Convert Date to Calendar to get the day of the week
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int yogaClassDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+
+        return courseDayOfWeek == yogaClassDayOfWeek;
+    }
+
 }
 

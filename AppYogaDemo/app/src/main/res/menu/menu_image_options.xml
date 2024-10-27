@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_upload_image"
+        android:title="Upload Image" />
+    <item
+        android:id="@+id/menu_enter_url_image"
+        android:title="Enter URL Image" />
+</menu>

@@ -1,108 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:fillViewport="true"
+    android:background="@color/background"
     android:padding="16dp">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Classes"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:paddingBottom="8dp"
-        android:textStyle="bold"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp">
-
-        <ImageView
-            android:id="@+id/imageClass"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#f0f0f0"
-            android:scaleType="centerCrop"
-            android:src="@drawable/yoga_class" />
-
-        <ImageView
-            android:id="@+id/btnChooseImage"
-            android:layout_width="40dp"
-            android:layout_height="50dp"
-            app:srcCompat="@drawable/ic_camera"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="110dp"
-            />
-    </RelativeLayout>
-
-    <EditText
-        android:id="@+id/inputClassName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Class Name"
-        android:drawableStart="@drawable/ic_title"
-        android:drawablePadding="5dp"
-        android:padding="12dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/outline_border"
-        />
-
-    <EditText
-        android:id="@+id/inputClassDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Date"
-        android:drawableStart="@drawable/ic_canlendar"
-        android:drawablePadding="5dp"
-        android:padding="12dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/outline_border"
-        />
-
-    <EditText
-        android:id="@+id/inputComments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Comments"
-        android:drawableStart="@drawable/ic_comments"
-        android:drawablePadding="5dp"
-        android:padding="12dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/outline_border"
-        />
-
-    <Spinner
-        android:id="@+id/spinnerTeachers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:prompt="@string/choose_teacher"
-        android:padding="12dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/outline_border"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end"
-        android:paddingTop="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cancel"/>
+            android:text="Add Classes"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/btnAddEditClass"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:layout_marginStart="16dp"/>
+            android:padding="8dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/imageClass"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#f0f0f0"
+                android:scaleType="centerCrop"
+                android:src="@drawable/yoga_class" />
+
+            <ImageView
+                android:id="@+id/btnChooseImage"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_camera"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="110dp"
+                />
+        </RelativeLayout>
+
+        <!-- URL Input for URL Image Option -->
+        <EditText
+            android:id="@+id/inputUrlImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Image URL"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:padding="12dp"
+            android:background="@drawable/outline_border" />
+
+        <TextView
+            android:id="@+id/errorUrlImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/inputClassName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Class Name"
+            android:drawableStart="@drawable/ic_title"
+            android:drawablePadding="5dp"
+            android:padding="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/outline_border"
+            />
+
+        <TextView
+            android:id="@+id/errorClassName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/inputClassDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Date"
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="none"
+            android:drawableStart="@drawable/ic_canlendar"
+            android:drawablePadding="5dp"
+            android:padding="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/outline_border"
+            />
+
+        <TextView
+            android:id="@+id/errorClassDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/inputComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Comments"
+            android:drawableStart="@drawable/ic_comments"
+            android:drawablePadding="5dp"
+            android:padding="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/outline_border"
+            />
+
+        <TextView
+            android:id="@+id/errorComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <Spinner
+            android:id="@+id/spinnerTeachers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/choose_teacher"
+            android:padding="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/outline_border"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:paddingTop="16dp">
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"/>
+
+            <Button
+                android:id="@+id/btnAddEditClass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

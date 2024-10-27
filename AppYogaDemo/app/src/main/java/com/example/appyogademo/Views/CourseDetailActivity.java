@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.appyogademo.Fragments.YogaClassBottomSheetFragment;
 import com.example.appyogademo.Models.Course;
 import com.example.appyogademo.Models.YogaClass;
+import com.example.appyogademo.Utils.TimeUtils;
+import com.example.appyogademo.ViewModels.YogaClassViewModel;
 import com.example.appyogademo.databinding.ActivityCourseDetailBinding;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +17,8 @@ import java.util.List;
 
 public class CourseDetailActivity extends AppCompatActivity {
     ActivityCourseDetailBinding binding;
+    private YogaClassViewModel yogaClassViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +34,12 @@ public class CourseDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Course course = (Course) intent.getSerializableExtra("course");
 
+        yogaClassViewModel = new YogaClassViewModel(this, course.getId());
+
         // Hiển thị thông tin khóa học
         if (course != null) {
             binding.txtCourseName.setText(course.getCourseName());
-            binding.txtDayOfWeek.setText(String.valueOf(course.getDayOfWeek())); // Chuyển đổi sang chuỗi
+            binding.txtDayOfWeek.setText(TimeUtils.dayOfWeek(course.getDayOfWeek()));
             binding.txtTime.setText(course.getTime().toString());
             binding.txtCapacity.setText(String.valueOf(course.getCapacity()));
             binding.txtDuration.setText(String.valueOf(course.getDuration()));
@@ -45,25 +51,13 @@ public class CourseDetailActivity extends AppCompatActivity {
         // Sự kiện click vào btnClassView
         binding.btnViewClass.setOnClickListener(v -> {
             // Lấy danh sách các lớp liên quan đến khóa học này (ví dụ từ cơ sở dữ liệu)
-            List<YogaClass> relatedYogaClasses = getRelatedYogaClasses(course);
+            List<YogaClass> relatedYogaClasses = yogaClassViewModel.getYogaClassesRelatedCourseId().getValue();
 
             // Hiển thị BottomSheet
-            YogaClassBottomSheetFragment bottomSheet = new YogaClassBottomSheetFragment(relatedYogaClasses);
+            YogaClassBottomSheetFragment bottomSheet = YogaClassBottomSheetFragment.newInstance(relatedYogaClasses, course.getId());
             bottomSheet.show(getSupportFragmentManager(), "YogaClassBottomSheet");
         });
 
-    }
-
-    private List<YogaClass> getRelatedYogaClasses(Course course) {
-        // Giả lập danh sách các YogaClass liên quan đến course
-        // Bạn có thể thay thế phần này để lấy dữ liệu thực tế từ cơ sở dữ liệu
-
-        List<YogaClass> yogaClasses = new ArrayList<>();
-        yogaClasses.add(new YogaClass(1, "Morning Flow", new Date(), "Class for beginners", "image_url", 1, course.getId()));
-        yogaClasses.add(new YogaClass(2, "Evening Stretch", new Date(), "Advanced class", "image_url", 2, course.getId()));
-        // Thêm các YogaClass khác nếu cần
-
-        return yogaClasses;
     }
 
 

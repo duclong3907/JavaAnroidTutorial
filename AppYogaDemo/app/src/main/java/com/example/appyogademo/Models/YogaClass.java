@@ -1,6 +1,9 @@
 package com.example.appyogademo.Models;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class YogaClass implements Serializable {
@@ -18,12 +21,10 @@ public class YogaClass implements Serializable {
     private Date date;
     private String comments;
     private String image;
-    private int teacherId;
+    private String teacherId;
     private int courseId;
 
-    public YogaClass() {}
-
-    public YogaClass(int id, String className, Date date, String comments, String image, int teacherId, int courseId) {
+    public YogaClass(int id, String className, Date date, String comments, String image, String teacherId, int courseId) {
         this.id = id;
         this.className = className;
         this.date = date;
@@ -73,11 +74,11 @@ public class YogaClass implements Serializable {
         this.image = image;
     }
 
-    public int getTeacherId() {
+    public String getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(int teacherId) {
+    public void setTeacherId(String teacherId) {
         this.teacherId = teacherId;
     }
 
@@ -96,9 +97,9 @@ public class YogaClass implements Serializable {
                     COLUMN_DATE + " TEXT, " +
                     COLUMN_COMMENTS + " TEXT, " +
                     COLUMN_IMAGE + " TEXT, " +
-                    COLUMN_TEACHERID + " INTEGER, " +
+                    COLUMN_TEACHERID + " TEXT, " +
                     COLUMN_COURSEID + " INTEGER, " +
-                    "FOREIGN KEY(" + COLUMN_COURSEID + ") REFERENCES " +
-                    Course.TABLE_NAME + "(" + Course.COLUMN_ID + ")" +
+                    "FOREIGN KEY(" + COLUMN_TEACHERID + ") REFERENCES " + User.TABLE_NAME + "(" + User.COLUMN_ID + "), " +
+                    "FOREIGN KEY(" + COLUMN_COURSEID + ") REFERENCES " + Course.TABLE_NAME + "(" + Course.COLUMN_ID + ")" +
                     ")";
 }

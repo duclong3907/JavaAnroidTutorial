@@ -18,9 +18,9 @@ public class AuthRepository {
     public Result login(String email, String password) {
         return email.isEmpty() || password.isEmpty()
                 ? new Result(false, "Email or password is empty")
-                : userHelper.checkEmailPassword(email, password)
-                ? new Result(true, "Login successfully")
-                : new Result(false, "Email or password is incorrect");
+                : userHelper.checkEmailPassword(email, password).isStatus()
+                ? new Result(true, userHelper.checkEmailPassword(email, password).getMessage())
+                : new Result(false, userHelper.checkEmailPassword(email, password).getMessage());
     }
 
     public Result register(User user) {
