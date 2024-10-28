@@ -12,7 +12,7 @@
         <!-- FrameLayout chứa ClassImage và nút Back chồng lên nhau -->
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="350dp">
 
             <!-- Image of the Yoga class -->
             <ImageView
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
            <LinearLayout
                android:layout_width="match_parent"
@@ -51,11 +51,11 @@
                    android:id="@+id/classesName"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="8dp"
                    android:text="className"
-                   android:textSize="18sp"
+                   android:textSize="22sp"
                    android:textStyle="bold"
-                   android:textColor="@color/black"/>
+                   android:textColor="@color/black"
+                   />
 
                <LinearLayout
                    android:layout_width="match_parent"
@@ -80,14 +80,14 @@
                 android:text="classDate - DayOfWeek"
                 android:textSize="14sp"
                 android:textColor="#808080"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Teacher section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -110,7 +110,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Teacher Name"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
 
                     <TextView
@@ -147,22 +148,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Class Type: Flow Yoga"
-                android:textSize="16sp"
-                android:layout_marginTop="8dp" />
+                android:textSize="20sp"
+                android:layout_marginTop="16dp" />
 
             <!-- Time and Duration -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="16dp">
 
                 <TextView
                     android:id="@+id/StartTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Start Time: 11:09"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -174,7 +175,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Duration: "
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -185,8 +186,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Capacity"
-                android:textSize="14sp"
-                android:layout_marginTop="8dp" />
+                android:textSize="16sp"
+                android:layout_marginTop="16dp" />
 
             <!-- Class Description -->
             <TextView
@@ -194,16 +195,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:maxLines="3"
                 android:ellipsize="end"
-                android:layout_marginTop="8dp" />
+                android:layout_marginTop="16dp"
+                android:justificationMode="inter_word"
+                />
+
+            <TextView
+                android:id="@+id/btnSeeMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="Back"
+                android:text="See more"
+                android:textColor="#2196F3"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="comments"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/outline_border"
                 />
 
@@ -212,7 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_gravity="center_vertical"
                 >
 

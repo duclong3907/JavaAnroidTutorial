@@ -13,6 +13,8 @@ import com.example.appyogademo.Models.YogaClass;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +24,7 @@ public class YogaClassHelper {
     private SQLiteDatabase db;
     private Context context;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public YogaClassHelper(SQLiteDatabase db, Context context) {
         this.db = db;
         this.context = context;
@@ -37,15 +39,15 @@ public class YogaClassHelper {
         values.put(YogaClass.COLUMN_IMAGE, yogaClass.getImage());
         values.put(YogaClass.COLUMN_TEACHERID, yogaClass.getTeacherId());
         values.put(YogaClass.COLUMN_COURSEID, yogaClass.getCourseId());
+        values.put(YogaClass.COLUMN_CREATED_AT, LocalDateTime.now().format(DATE_TIME_FORMATTER));
+        values.put(YogaClass.COLUMN_UPDATED_AT, LocalDateTime.now().format(DATE_TIME_FORMATTER));
 
         db.insert(YogaClass.TABLE_NAME, null, values);
     }
 
-    // Lấy tất cả YogaClasses từ cơ sở dữ liệu
     public List<YogaClass> getAllYogaClasses() {
         List<YogaClass> yogaClasses = new ArrayList<>();
         Cursor cursor = db.query(YogaClass.TABLE_NAME, null, null, null, null, null, null);
-
         if (cursor != null) {
             try {
                 while (cursor.moveToNext()) {
@@ -56,6 +58,8 @@ public class YogaClassHelper {
                     int imageIndex = cursor.getColumnIndex(YogaClass.COLUMN_IMAGE);
                     int teacherIdIndex = cursor.getColumnIndex(YogaClass.COLUMN_TEACHERID);
                     int courseIdIndex = cursor.getColumnIndex(YogaClass.COLUMN_COURSEID);
+                    int createdAtIndex = cursor.getColumnIndex(YogaClass.COLUMN_CREATED_AT);
+                    int updatedAtIndex = cursor.getColumnIndex(YogaClass.COLUMN_UPDATED_AT);
 
                     if (idIndex != -1 && classNameIndex != -1 && dateIndex != -1 &&
                             commentsIndex != -1 && imageIndex != -1 && teacherIdIndex != -1 && courseIdIndex != -1) {
@@ -71,8 +75,10 @@ public class YogaClassHelper {
                         String image = cursor.getString(imageIndex);
                         String teacherId = cursor.getString(teacherIdIndex);
                         int courseId = cursor.getInt(courseIdIndex);
+                        LocalDateTime createdAt = LocalDateTime.parse(cursor.getString(createdAtIndex), DATE_TIME_FORMATTER);
+                        LocalDateTime updatedAt = LocalDateTime.parse(cursor.getString(updatedAtIndex), DATE_TIME_FORMATTER);
 
-                        yogaClasses.add(new YogaClass(id, className, date, comments, image, teacherId, courseId));
+                        yogaClasses.add(new YogaClass(id, className, date, comments, image, teacherId, courseId, createdAt, updatedAt));
                     }
                 }
             } finally {
@@ -97,6 +103,8 @@ public class YogaClassHelper {
                     int imageIndex = cursor.getColumnIndex(YogaClass.COLUMN_IMAGE);
                     int teacherIdIndex = cursor.getColumnIndex(YogaClass.COLUMN_TEACHERID);
                     int courseIdIndex = cursor.getColumnIndex(YogaClass.COLUMN_COURSEID);
+                    int createdAtIndex = cursor.getColumnIndex(YogaClass.COLUMN_CREATED_AT);
+                    int updatedAtIndex = cursor.getColumnIndex(YogaClass.COLUMN_UPDATED_AT);
 
                     if (idIndex != -1 && classNameIndex != -1 && dateIndex != -1 &&
                             commentsIndex != -1 && imageIndex != -1 && teacherIdIndex != -1 && courseIdIndex != -1) {
@@ -111,7 +119,10 @@ public class YogaClassHelper {
                         String comments = cursor.getString(commentsIndex);
                         String image = cursor.getString(imageIndex);
                         String teacherId = cursor.getString(teacherIdIndex);
-                        yogaClasses.add(new YogaClass(id, className, date, comments, image, teacherId, courseId));
+                        LocalDateTime createdAt = LocalDateTime.parse(cursor.getString(createdAtIndex), DATE_TIME_FORMATTER);
+                        LocalDateTime updatedAt = LocalDateTime.parse(cursor.getString(updatedAtIndex), DATE_TIME_FORMATTER);
+
+                        yogaClasses.add(new YogaClass(id, className, date, comments, image, teacherId, courseId, createdAt, updatedAt));
                     }
                 }
             } finally {
@@ -130,7 +141,7 @@ public class YogaClassHelper {
         values.put(YogaClass.COLUMN_IMAGE, yogaClass.getImage());
         values.put(YogaClass.COLUMN_TEACHERID, yogaClass.getTeacherId());
         values.put(YogaClass.COLUMN_COURSEID, yogaClass.getCourseId());
-
+        values.put(YogaClass.COLUMN_UPDATED_AT, LocalDateTime.now().format(DATE_TIME_FORMATTER));
         db.update(YogaClass.TABLE_NAME, values, YogaClass.COLUMN_ID + "=?", new String[]{String.valueOf(yogaClass.getId())});
     }
 

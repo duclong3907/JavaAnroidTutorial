@@ -25,6 +25,7 @@ public class YogaClassDetailActivity extends AppCompatActivity {
     ActivityYogaClassDetailBinding binding;
     CourseViewModel courseViewModel;
     UserViewModel userViewModel;
+    private boolean isDescriptionExpanded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +58,32 @@ public class YogaClassDetailActivity extends AppCompatActivity {
 
             binding.classesName.setText(yogaClass.getClassName());
             binding.classDateAndDayOfWeek.setText(TimeUtils.convertDate(yogaClass.getDate().toString()) + " - " + TimeUtils.dayOfWeek(course.getDayOfWeek()));
-            binding.Experience.setText("Experience: " + teacher.getExperience());
+            binding.Experience.setText("Experience: " + teacher.getExperience() + " years");
             binding.TeacherName.setText(teacher.getFullName());
+            binding.CreatedAt.setText(TimeUtils.timeAgo(yogaClass.getCreatedAt()));
             binding.ClassType.setText("Class Type: " + course.getClassType());
-            binding.StartTime.setText("Start Time: " + course.getTime().toString());
+            binding.StartTime.setText("Start Time: " + TimeUtils.convertTime(course.getTime().toString()));
             binding.Duration.setText("Duration: " + course.getDuration() + " minutes");
             binding.PricePerClass.setText(course.getPricePerClass() + " Per Person");
             binding.Description.setText(course.getDescription());
 
 
         }
+
+        // Sự kiện khi click vào btnSeeMore
+        binding.btnSeeMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isDescriptionExpanded) {
+                    binding.Description.setMaxLines(3);
+                    binding.btnSeeMore.setText("See more");
+                } else {
+                    binding.Description.setMaxLines(Integer.MAX_VALUE);
+                    binding.btnSeeMore.setText("See less");
+                }
+                isDescriptionExpanded = !isDescriptionExpanded;
+            }
+        });
 
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -75,7 +75,6 @@ public class YogaClassBottomSheetFragment extends BottomSheetDialogFragment {
         });
 
         // Handle the click event on the edit button
-        // Handle the click event on the edit button
         adapter.setOnEditClickListener(yogaClass -> {
             AddEditClassDialogFragment addEditClassDialogFragment = AddEditClassDialogFragment.newInstance(yogaClass, courseId, updatedYogaClass -> {
                 // Find the index of the updated yoga class in the list

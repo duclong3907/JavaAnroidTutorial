@@ -3,6 +3,8 @@ package com.example.appyogademo.Views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.appyogademo.Fragments.YogaClassBottomSheetFragment;
@@ -18,6 +20,7 @@ import java.util.List;
 public class CourseDetailActivity extends AppCompatActivity {
     ActivityCourseDetailBinding binding;
     private YogaClassViewModel yogaClassViewModel;
+    private boolean isDescriptionExpanded = false;
 
 
     @Override
@@ -40,7 +43,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         if (course != null) {
             binding.txtCourseName.setText(course.getCourseName());
             binding.txtDayOfWeek.setText(TimeUtils.dayOfWeek(course.getDayOfWeek()));
-            binding.txtTime.setText(course.getTime().toString());
+            binding.txtTime.setText(TimeUtils.convertTime(course.getTime().toString()));
             binding.txtCapacity.setText(String.valueOf(course.getCapacity()));
             binding.txtDuration.setText(String.valueOf(course.getDuration()));
             binding.txtPricePerClass.setText(String.valueOf(course.getPricePerClass()));
@@ -56,6 +59,21 @@ public class CourseDetailActivity extends AppCompatActivity {
             // Hiển thị BottomSheet
             YogaClassBottomSheetFragment bottomSheet = YogaClassBottomSheetFragment.newInstance(relatedYogaClasses, course.getId());
             bottomSheet.show(getSupportFragmentManager(), "YogaClassBottomSheet");
+        });
+
+        // Sự kiện khi click vào btnSeeMore
+        binding.btnSeeMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isDescriptionExpanded) {
+                    binding.txtDescription.setMaxLines(3);
+                    binding.btnSeeMore.setText("See more");
+                } else {
+                    binding.txtDescription.setMaxLines(Integer.MAX_VALUE);
+                    binding.btnSeeMore.setText("See less");
+                }
+                isDescriptionExpanded = !isDescriptionExpanded;
+            }
         });
 
     }

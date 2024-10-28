@@ -300,44 +300,54 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            >
-
-            <ImageView
-                android:id="@+id/ic_des"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:srcCompat="@drawable/ic_people"
-                android:background="@null"
-                android:layout_gravity="center_vertical"
-                android:padding="10dp" />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                >
+
+                <ImageView
+                    android:id="@+id/ic_des"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:srcCompat="@drawable/ic_description"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp" />
 
                 <TextView
                     android:id="@+id/des"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Capacity"
+                    android:text="Description"
+                    android:layout_gravity="center_vertical"
                     android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/txtDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textSize="16sp" />
-
             </LinearLayout>
-
+            <TextView
+                android:id="@+id/txtDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:maxLines="3"
+                android:justificationMode="inter_word"
+                android:padding="10dp"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/btnSeeMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="Back"
+                android:text="See more"
+                android:textColor="#2196F3"
+                android:padding="10dp"
+                android:textStyle="bold" />
         </LinearLayout>
-
 
     </LinearLayout>
 

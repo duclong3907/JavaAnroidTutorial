@@ -49,8 +49,7 @@ public class YogaClassRepository {
 
         yogaClassHelper.insertYogaClass(yogaClass);
         loadYogaClassRelatedCourseId(yogaClass.getCourseId());
-        loadYogaClassRelatedCourseId(yogaClass.getCourseId());
-//      loadYogaClasses();
+        loadYogaClasses();
         return new Result(true, "Class added successfully");
     }
 

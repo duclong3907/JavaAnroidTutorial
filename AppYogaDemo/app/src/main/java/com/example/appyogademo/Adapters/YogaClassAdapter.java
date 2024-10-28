@@ -38,9 +38,9 @@ public class YogaClassAdapter extends RecyclerView.Adapter<YogaClassAdapter.Yoga
 
     @Override
     public void onBindViewHolder(@NonNull YogaClassViewHolder holder, int position) {
-        YogaClass yogaClass = yogaClassList.get(position);
+        var yogaClass = yogaClassList.get(position);
         holder.binding.className.setText(yogaClass.getClassName());
-
+        holder.binding.createdTime.setText(TimeUtils.timeAgo(yogaClass.getUpdatedAt()));
         // Set image using Picasso
         Picasso.get()
                 .load(yogaClass.getImage())

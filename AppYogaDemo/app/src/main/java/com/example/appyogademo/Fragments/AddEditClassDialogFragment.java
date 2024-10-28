@@ -34,6 +34,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -145,7 +147,7 @@ public class AddEditClassDialogFragment extends DialogFragment {
             // If editing an existing YogaClass, update values
             if (yogaClass == null) {
                 String image = imageUri != null ? imageUri.toString() : binding.inputUrlImage.getText().toString();
-                yogaClass = new YogaClass(0, className, parseDate(classDate), comments, image, selectedTeacher.getId(), courseId);
+                yogaClass = new YogaClass(0, className, parseDate(classDate), comments, image, selectedTeacher.getId(), courseId, null, null);
                 Boolean result = yogaClassViewModel.insert(yogaClass);
                 if(result) {
                     onSaveListener.onSave(yogaClass);
@@ -156,6 +158,8 @@ public class AddEditClassDialogFragment extends DialogFragment {
                 yogaClass.setComments(comments);
                 yogaClass.setDate(parseDate(classDate));
                 yogaClass.setTeacherId(selectedTeacher.getId());
+                yogaClass.setUpdatedAt(LocalDateTime.now());
+
 
                 // Save image URI or URL
                 if (imageUri != null) {

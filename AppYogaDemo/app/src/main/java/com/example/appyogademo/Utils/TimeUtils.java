@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
@@ -35,6 +36,13 @@ public class TimeUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String convertTime(String time) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime localTime = LocalTime.parse(time, inputFormatter);
+        return localTime.format(outputFormatter);
     }
 
     public static String dayOfWeek(int day) {

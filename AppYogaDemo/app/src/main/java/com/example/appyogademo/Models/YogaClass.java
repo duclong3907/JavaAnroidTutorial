@@ -15,6 +15,8 @@ public class YogaClass implements Serializable {
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_TEACHERID = "teacherId";
     public static final String COLUMN_COURSEID = "courseId";
+    public static final String COLUMN_CREATED_AT = "createdAt";
+    public static final String COLUMN_UPDATED_AT = "updatedAt";
 
     private int id;
     private String className;
@@ -23,8 +25,10 @@ public class YogaClass implements Serializable {
     private String image;
     private String teacherId;
     private int courseId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public YogaClass(int id, String className, Date date, String comments, String image, String teacherId, int courseId) {
+    public YogaClass(int id, String className, Date date, String comments, String image, String teacherId, int courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.className = className;
         this.date = date;
@@ -32,6 +36,8 @@ public class YogaClass implements Serializable {
         this.image = image;
         this.teacherId = teacherId;
         this.courseId = courseId;
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now(); // Ensure createdAt is not null
+        this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now(); // Ensure updatedAt is not null
     }
 
     public int getId() {
@@ -90,6 +96,22 @@ public class YogaClass implements Serializable {
         this.courseId = courseId;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -99,6 +121,8 @@ public class YogaClass implements Serializable {
                     COLUMN_IMAGE + " TEXT, " +
                     COLUMN_TEACHERID + " TEXT, " +
                     COLUMN_COURSEID + " INTEGER, " +
+                    COLUMN_CREATED_AT + " TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                    COLUMN_UPDATED_AT + " TEXT DEFAULT CURRENT_TIMESTAMP, " +
                     "FOREIGN KEY(" + COLUMN_TEACHERID + ") REFERENCES " + User.TABLE_NAME + "(" + User.COLUMN_ID + "), " +
                     "FOREIGN KEY(" + COLUMN_COURSEID + ") REFERENCES " + Course.TABLE_NAME + "(" + Course.COLUMN_ID + ")" +
                     ")";
